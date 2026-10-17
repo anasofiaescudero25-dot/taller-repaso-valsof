@@ -1,54 +1,55 @@
-// ==========================================
-// RETO 1: MODO OSCURO INTERACTIVO
-// ==========================================
+// =======================================================
+ // 1. FASE DE SELECCIÓN (Buscando a los actores)
+ // =======================================================
+ // Atrapamos el botón que creamos en el HTML usando su ID
+ const botonTema = document.getElementById('btn-tema');
 
-// 1. SELECCIÓN DE ELEMENTOS DEL DOM
-// [Comentario obligatorio: Explica aquí con tus palabras qué hace
-// getElementById y por qué le pasamos 'btn-toggle-tema']
-const btnTema = document.getElementById('btn-toggle-tema');
+ // Atrapamos toda la página
+ const cuerpoPagina = document.body;
 
-// [Comentario obligatorio: Explica por qué seleccionamos el body
-// directamente con document.body]
-const body = document.body;
 
-// 2. MANEJO DE EVENTOS
-// [Comentario obligatorio: Explica qué es el evento 'click' y qué
-// papel juega la función anónima que le pasamos]
-btnTema.addEventListener('click', function() {
+ // =======================================================
+ // 2. FASE DE RECUPERACIÓN (Leyendo la memoria)
+ // =======================================================
+ // Consultamos si el usuario tiene una preferencia guardada
+ const temaGuardado = localStorage.getItem('preferenciaTema');
 
-    // [Comentario obligatorio: Explica qué hace exactamente el método
-    // classList.toggle('tema-oscuro')]
-    body.classList.toggle('tema-oscuro');
+ // Si anteriormente seleccionó el modo oscuro,
+ // lo activamos automáticamente al cargar la página
+ if (temaGuardado === 'oscuro') {
+     cuerpoPagina.classList.add('dark-theme');
+     botonTema.textContent = "❤️ Claro";
+ } else {
+     // Si no hay preferencia o eligió modo claro
+     cuerpoPagina.classList.remove('dark-theme');
+     botonTema.textContent = "✨ Oscuro";
+ }
 
-    // Cambiar el texto del botón dependiendo del estado
-    if (body.classList.contains('tema-oscuro')) {
-        btnTema.textContent = "☀️ Modo Claro";
-    } else {
-        btnTema.textContent = "🌙 Modo Oscuro";
-    }
-});
 
-// ==========================================
-// RETO 2: SALUDO DINÁMICO
-// ==========================================
+ // =======================================================
+ // 3. FASE DE ESCUCHA Y ACCIÓN (Event Listeners)
+ // =======================================================
+ // Escuchamos cuando el usuario hace clic en el botón
+ botonTema.addEventListener('click', function() {
 
-// 1. SELECCIÓN DEL CONTENEDOR
-const textoSaludo = document.getElementById('saludo-tiempo-real');
+     // Alternamos la clase dark-theme en el body
+     cuerpoPagina.classList.toggle('dark-theme');
 
-// 2. LÓGICA DE TIEMPO
-const fechaActual = new Date();
-const horaActual = fechaActual.getHours();
-let mensaje = "";
+     // Verificamos si quedó activado el modo oscuro
+     if (cuerpoPagina.classList.contains('dark-theme')) {
 
-if (horaActual >= 6 && horaActual < 12) {
-    mensaje = "¡Buenos días! Espero que tengas una excelente mañana.";
-} else if (horaActual >= 12 && horaActual < 18) {
-    mensaje = "¡Buenas tardes! Gracias por visitar mi perfil.";
-} else {
-    mensaje = "¡Buenas noches! Descubre mi trabajo.";
-}
+         // Actualizamos el texto del botón
+         botonTema.textContent = "❤️ Claro";
 
-// 3. INYECCIÓN EN EL DOM
-// [Comentario obligatorio: Explica la diferencia entre textContent e
-// innerHTML y por qué usamos textContent aquí]
-textoSaludo.textContent = mensaje;
+         // Guardamos la preferencia en el navegador
+         localStorage.setItem('preferenciaTema', 'oscuro');
+
+     } else {
+
+         // Actualizamos el texto del botón
+         botonTema.textContent = "✨ Oscuro";
+
+         // Guardamos la preferencia en el navegador
+         localStorage.setItem('preferenciaTema', 'claro');
+     }
+ });
